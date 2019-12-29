@@ -1,0 +1,425 @@
+# vim:ft=yaml
+# For documentation on each option please see
+# https://github.com/matrix-org/synapse/blob/master/docs/sample_config.yaml
+---
+## Server ##
+server_name: "matrix.domain"
+pid_file: /data/homeserver.pid
+# web_client_location: "/path/to/web/root"
+public_baseurl: https://matrix.domain/
+# soft_file_limit: 0
+# use_presence: false
+require_auth_for_profile_requests: true
+allow_public_rooms_without_auth: false
+allow_public_rooms_over_federation: false
+# default_room_version: "4"
+# gc_thresholds: [700, 10, 10]
+# filter_timeline_limit: 5000
+block_non_admin_invites: false
+enable_search: true
+federation_domain_whitelist:
+  - matrix.domain
+federation_ip_range_blacklist:
+  - '127.0.0.0/8'
+  - '10.0.0.0/8'
+  - '172.16.0.0/12'
+  - '192.168.0.0/16'
+  - '100.64.0.0/10'
+  - '169.254.0.0/16'
+  - '::1/128'
+  - 'fe80::/64'
+  - 'fc00::/7'
+listeners:
+  - port: 8008
+    tls: false
+    type: http
+    x_forwarded: true
+    resources:
+      - names: [client, federation]
+        compress: false
+
+## Homeserver blocking ##
+admin_contact: 'mailto:matrix@matrix.domain'
+# hs_disabled: False
+# hs_disabled_message: 'Human readable reason for why the HS is blocked'
+# hs_disabled_limit_type: 'error code(str), to help clients decode reason'
+# limit_usage_by_mau: False
+# max_mau_value: 50
+# mau_trial_days: 2
+# mau_limit_alerting: false
+# mau_stats_only: False
+# mau_limit_reserved_threepids:
+#  - medium: 'email'
+#  address: 'reserved_user@example.com'
+# server_context: context
+# limit_remote_rooms:
+#  enabled: True
+#  complexity: 1.0
+#  complexity_error: "This room is too complex."
+# require_membership_for_aliases: false
+# allow_per_room_profiles: false
+# redaction_retention_period: 28d
+# user_ips_max_age: 14d
+# retention:
+#  enabled: true
+#  default_policy:
+#  min_lifetime: 1d
+#  max_lifetime: 1y
+#  allowed_lifetime_min: 1d
+#  allowed_lifetime_max: 1y
+# purge_jobs:
+#  - shortest_max_lifetime: 1d
+#  longest_max_lifetime: 3d
+#  interval: 5m:
+#  - shortest_max_lifetime: 3d
+#  longest_max_lifetime: 1y
+#  interval: 24h
+
+## TLS ##
+# tls_certificate_path: "/data/.tls.crt"
+# tls_private_key_path: "/data/.tls.key"
+# federation_verify_certificates: false
+# federation_client_minimum_tls_version: 1.2
+# federation_certificate_verification_whitelist:
+#  - lon.example.com
+#  - *.domain.com
+#  - *.onion
+# federation_custom_ca_list:
+#  - myCA1.pem
+#  - myCA2.pem
+#  - myCA3.pem
+# acme:
+#  enabled: false
+#  url: https://acme-v01.api.letsencrypt.org/directory
+#  port: 80
+#  bind_addresses: ['::', '0.0.0.0']
+#  reprovision_threshold: 30
+#  domain: matrix.example.com
+#  account_key_file: /data/acme_account.key
+# tls_fingerprints: [{"sha256": "<base64_encoded_sha256_fingerprint>"}]
+
+## Database ##
+database:
+  name: "sqlite3"
+  args:
+    database: "/data/homeserver.db"
+# event_cache_size: 10K
+
+## Logging ##
+log_config: "/data/matrix.log.config"
+
+## Ratelimiting ##
+# rc_message:
+#  per_second: 0.2
+#  burst_count: 10
+#
+# rc_registration:
+#  per_second: 0.17
+#  burst_count: 3
+#
+# rc_login:
+#  address:
+#  per_second: 0.17
+#  burst_count: 3
+#  account:
+#  per_second: 0.17
+#  burst_count: 3
+#  failed_attempts:
+#  per_second: 0.17
+#  burst_count: 3
+
+# rc_federation:
+#  window_size: 1000
+#  sleep_limit: 10
+#  sleep_delay: 500
+#  reject_limit: 50
+#  concurrent: 3
+
+# federation_rr_transactions_per_room_per_second: 50
+
+## Media Store ##
+# enable_media_repo: false
+media_store_path: "/data/media_store"
+# media_storage_providers:
+#  - module: file_system
+#  # Whether to write new local files.
+#  store_local: false
+#  # Whether to write new remote media
+#  store_remote: false
+#  # Whether to block upload requests waiting for write to this
+#  # provider to complete
+#  store_synchronous: false
+#  config:
+#     directory: /mnt/some/other/directory
+uploads_path: "/data/uploads"
+max_upload_size: 1024M
+# max_image_pixels: 32M
+# dynamic_thumbnails: false
+# thumbnail_sizes:
+#  - width: 32
+#  height: 32
+#  method: crop
+#  - width: 96
+#  height: 96
+#  method: crop
+#  - width: 320
+#  height: 240
+#  method: scale
+#  - width: 640
+#  height: 480
+#  method: scale
+#  - width: 800
+#  height: 600
+#  method: scale
+# url_preview_enabled: true
+# url_preview_ip_range_blacklist:
+#  - '127.0.0.0/8'
+#  - '10.0.0.0/8'
+#  - '172.16.0.0/12'
+#  - '192.168.0.0/16'
+#  - '100.64.0.0/10'
+#  - '169.254.0.0/16'
+#  - '::1/128'
+#  - 'fe80::/64'
+#  - 'fc00::/7'
+# url_preview_ip_range_whitelist:
+#   - '192.168.1.1'
+# url_preview_url_blacklist:
+#  # blacklist any URL with a username in its URI
+#  - username: '*'
+#
+#  # blacklist all *.google.com URLs
+#  - netloc: 'google.com'
+#  - netloc: '*.google.com'
+#
+#  # blacklist all plain HTTP URLs
+#  - scheme: 'http'
+#
+#  # blacklist http(s)://www.acme.com/foo
+#  - netloc: 'www.acme.com'
+#  path: '/foo'
+#
+#  # blacklist any URL with a literal IPv4 address
+#  - netloc: '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'
+# max_spider_size: 10M
+
+## Captcha ##
+# recaptcha_public_key: "YOUR_PUBLIC_KEY"
+# recaptcha_private_key: "YOUR_PRIVATE_KEY"
+# enable_registration_captcha: false
+# captcha_bypass_secret: "YOUR_SECRET_HERE"
+# recaptcha_siteverify_api: "https://www.recaptcha.net/recaptcha/api/siteverify"
+
+## TURN ##
+# turn_uris: []
+# turn_shared_secret: "YOUR_SHARED_SECRET"
+# turn_username: "TURNSERVER_USERNAME"
+# turn_password: "TURNSERVER_PASSWORD"
+# turn_user_lifetime: 1h
+# turn_allow_guests: True
+
+## Registration ##
+enable_registration: true
+# account_validity:
+#  enabled: True
+#  period: 6w
+#  renew_at: 1w
+#  renew_email_subject: "Renew your %(app)s account"
+#  template_dir: "res/templates"
+#  account_renewed_html_path: "account_renewed.html"
+#  invalid_token_html_path: "invalid_token.html"
+# session_lifetime: 24h
+registrations_require_3pid:
+  - email
+disable_msisdn_registration: true
+# allowed_local_3pids:
+#  - medium: email
+#  pattern: '.*@matrix\.org'
+#  - medium: email
+#  pattern: '.*@vector\.im'
+#  - medium: msisdn
+#  pattern: '\+44'
+enable_3pid_lookup: true
+registration_shared_secret: "CHANGEME"
+# bcrypt_rounds: 12
+allow_guest_access: false
+default_identity_server: https://ident.matrix.domain
+trusted_third_party_id_servers:
+  - ident.matrix.domain
+account_threepid_delegates:
+  email: https://ident.matrix.domain
+auto_join_rooms:
+  - "#shared:matrix.domain"
+autocreate_auto_join_rooms: true
+
+## Metrics ###
+enable_metrics: false
+# sentry:
+#  dsn: "..."
+metrics_flags:
+  known_servers: false
+report_stats: false
+# report_stats_endpoint: https://example.com/report-usage-stats/push
+
+## API Configuration ##
+# room_invite_state_types:
+#  - "m.room.join_rules"
+#  - "m.room.canonical_alias"
+#  - "m.room.avatar"
+#  - "m.room.encryption"
+#  - "m.room.name"
+# app_service_config_files:
+#  - app_service_1.yaml
+#  - app_service_2.yaml
+# track_appservice_user_ips: True
+macaroon_secret_key: "CHANGEME"
+form_secret: "CHANGEME"
+
+## Signing Keys ##
+signing_key_path: "/data/matrix.domain.signing.key"
+# old_signing_keys:
+#  "ed25519:auto":
+#  key: "The public part of your old signing key."
+#  expired_ts: 123456789123
+# key_refresh_interval: 1d
+trusted_key_servers:
+  - server_name: "matrix.domain"
+# suppress_key_server_warning: true
+# key_server_signing_keys_path: "key_server_signing_keys.key"
+# saml2_config:
+#  sp_config:
+#  metadata:
+#    local: ["saml2/idp.xml"]
+#    remote:
+#    - url: https://our_idp/metadata.xml
+#  service:
+#    sp:
+#    allow_unsolicited: True
+#  description: ["My awesome SP", "en"]
+#  name: ["Test SP", "en"]
+#  organization:
+#    name: Example com
+#    display_name:
+#    - ["Example co", "en"]
+#    url: "http://example.com"
+#  contact_person:
+#    - given_name: Bob
+#    sur_name: "the Sysadmin"
+#    email_address": ["admin@example.com"]
+#    contact_type": technical
+#  config_path: "/data/sp_conf.py"
+#   saml_session_lifetime: 5m
+# cas_config:
+#   enabled: true
+#   server_url: "https://cas-server.com"
+#   service_url: "https://homeserver.domain.com:8448"
+#   required_attributes:
+#   name: value
+# jwt_config:
+#   enabled: true
+#   secret: "a secret"
+#   algorithm: "HS256"
+
+password_config:
+#  enabled: false
+#  localdb_enabled: false
+#  pepper: "EVEN_MORE_SECRET"
+email:
+  enable_notifs: true
+  smtp_host: "CHANGEME"
+  smtp_port: 587  # SSL: 465, STARTTLS: 587
+  smtp_user: "CHANGEME"
+  smtp_pass: "CHANGEME"
+  require_transport_security: true
+  notif_from: "Your Friendly %(app)s Home Server <matrix@matrix.domain>"
+  app_name: Matrix
+  notif_for_new_users: true
+  riot_base_url: "https://chat.matrix.domain"
+  trust_identity_server_for_password_resets: true
+  validation_token_lifetime: 1h
+  template_dir: /data/res/templates
+  notif_template_html: notif_mail.html
+  notif_template_text: notif_mail.txt
+  expiry_template_html: notice_expiry.html
+  expiry_template_text: notice_expiry.txt
+  password_reset_template_html: password_reset.html
+  password_reset_template_text: password_reset.txt
+  registration_template_html: registration.html
+  registration_template_text: registration.txt
+  add_threepid_template_html: add_threepid.html
+  add_threepid_template_text: add_threepid.txt
+  password_reset_template_success_html: password_reset_success.html
+  password_reset_template_failure_html: password_reset_failure.html
+  registration_template_success_html: registration_success.html
+  registration_template_failure_html: registration_failure.html
+  add_threepid_success_html: add_threepid_success.html
+  add_threepid_failure_html: add_threepid_failure.html
+# password_providers:
+#  - module: "ldap_auth_provider.LdapAuthProvider"
+#    config:
+#    enabled: true
+#    uri: "ldap://ldap.example.com:389"
+#    start_tls: true
+#    base: "ou=users,dc=example,dc=com"
+#    attributes:
+#       uid: "cn"
+#       mail: "email"
+#       name: "givenName"
+#    #bind_dn:
+#    #bind_password:
+#    #filter: "(objectClass=posixAccount)"
+push:
+  include_content: false
+enable_group_creation: true
+# group_creation_prefix: "unofficial/"
+user_directory:
+  enabled: true
+  search_all_users: true
+# user_consent:
+#  template_dir: res/templates/privacy
+#  version: 1.0
+#  server_notice_content:
+#  msgtype: m.text
+#  body: >-
+#    To continue using this homeserver you must review and agree to the
+#    terms and conditions at %(consent_uri)s
+#  send_server_notice_to_guests: True
+#  block_events_error: >-
+#  To continue using this homeserver you must review and agree to the
+#  terms and conditions at %(consent_uri)s
+#  require_at_registration: False
+#  policy_name: Privacy Policy
+stats:
+  enabled: true
+  bucket_size: 1d
+  retention: 2y
+# server_notices:
+#  system_mxid_localpart: notices
+#  system_mxid_display_name: "Server Notices"
+#  system_mxid_avatar_url: "mxc://server.com/oumMVlgDnLYFaPVkExemNVVZ"
+#  room_name: "Server Notices"
+# enable_room_list_search: false
+# alias_creation_rules:
+#  - user_id: "*"
+#  alias: "*"
+#  room_id: "*"
+#  action: allow
+# room_list_publication_rules:
+#  - user_id: "*"
+#  alias: "*"
+#  room_id: "*"
+#  action: allow
+# third_party_event_rules:
+#  module: "my_custom_project.SuperRulesSet"
+#  config:
+#  example_option: 'things'
+opentracing:
+  enabled: false
+  # homeserver_whitelist:
+  #  - ".*"
+  # jaeger_config:
+  #  sampler:
+  #  type: const
+  #  param: 1
+  # logging:
+  #  false

@@ -1,0 +1,37 @@
+version: '2.3'
+services:
+    homeserver:
+        image: matrixdotorg/synapse
+        mem_limit: 1024m
+        cpus: 4.00
+        volumes:
+            - synapse-data:/data
+        ports:
+            - '127.0.0.1:8080:8008'
+        restart: unless-stopped
+        #extra_hosts:
+            #- 'ident.domain.fqdn:host-ip'
+    webserver:
+        image: bubuntux/riot-web
+        mem_limit: 1024m
+        cpus: 4.00
+        volumes:
+            - riot-data/config.json:/etc/riot-web/config.json:ro
+        ports:
+            - '127.0.0.1:8082:80'
+        restart: unless-stopped
+    identity:
+        image: ma1uta/ma1sd
+        mem_limit: 512m
+        cpus: 1.00
+        environment:
+            MATRIX_DOMAIN: ident.matrix.domain
+        volumes:
+            - mxisd-data/etc:/etc/mxisd
+            - mxisd-data/var:/var/mxisd
+        ports:
+            - '127.0.0.1:8081:8090'
+        restart: unless-stopped
+        #extra_hosts:
+            #- 'matrix.domain.fqdn:host-ip'
+
