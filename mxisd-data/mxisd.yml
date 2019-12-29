@@ -1,0 +1,40 @@
+matrix:
+  domain: 'ident.matrix.domain'
+
+key:
+  path: '/var/mxisd/sign.key'
+
+dns:
+  overwrite:
+    homeserver:
+      client:
+        - name: 'ident.matrix.domain'
+          value: 'http://homeserver:8008' # No need to change this if you're using the docker-compose
+
+storage:
+  provider:
+    sqlite:
+      database: '/var/mxisd/mxisd.db'
+
+register:
+  policy:
+    allowed: false # This allows global registration
+    invite: true # This allows registration if you have an invite
+    domain:
+      whitelist: # E-mail domain whitelist
+        - '*example.com'
+
+threepid:
+  medium:
+    email:
+      identity:
+        from: 'matrix@example.com'
+        name: 'riot.domain.fqdn: Identity server'
+      connectors:
+        smtp:
+          host: 'smtp.server'
+          tls: 1 # 0 = no STARTLS, 1 = try, 2 = force, 3 = TLS/SSL
+          port: 587 # Set appropriate value depending on your TLS setting
+          login: 'login'
+          password: 'password'
+
